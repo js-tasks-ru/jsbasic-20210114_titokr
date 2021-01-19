@@ -13,6 +13,7 @@ function print(text) {
  */
 function isValid(name) {
   // ваш код...
+  return (name === null || name === '' || name.length < 4 || name.includes(' ')) ? false : true;
 }
 
 function sayHello() {
