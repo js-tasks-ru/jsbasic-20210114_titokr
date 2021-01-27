@@ -3,6 +3,7 @@
  * @param   {string} str -  входные данные
  * @returns {{min:number, max:number}}  объект
  */
+/*
 function getMinMax(str) {
   // ваш код...
   let numberArr = [],
@@ -36,6 +37,29 @@ function getMinMax(str) {
   
   result.min = findMin(numberArr);
   result.max = findMax(numberArr);
+
+  return result;
+}
+*/
+
+// вариант с использованием методов объекта Math
+function getMinMax(str) {
+  // ваш код...
+  let numberArr = [],
+      num,
+      result = {};
+
+  for (let subStrWithoutSpace of str.split(' ')) {
+    for (let subStr of subStrWithoutSpace.split(',')) {
+      num = parseFloat(subStr);
+      if (!isNaN(num)) {
+        numberArr.push(num);
+      }
+    }
+  }
+  
+  result.min = Math.min(...numberArr);
+  result.max = Math.max(...numberArr);
 
   return result;
 }
