@@ -5,6 +5,7 @@ export default class ProductCard {
     let pathImageProduct = '/assets/images/products/';
     this.elem = document.createElement('div');
     this.elem.className = 'card';
+    this.id = product.id;
     let template = `
         <div class="card">
             <div class="card__top">
@@ -21,22 +22,18 @@ export default class ProductCard {
         
     this.elem.insertAdjacentHTML('afterbegin', template);
 
-    let eventClickAddBtn = new CustomEvent("product-add", { // имя события должно быть именно "product-add"
-        detail: product.id, // Уникальный идентификатора товара из объекта товара
-        bubbles: true // это событие всплывает - это понадобится в дальнейшем
-    });
-
-    this.elem.onclick = function(event) {
-      let target = event.target;
-
-      while (target != this) {
-        if (target.className === 'card__button') {
-          target.dispatchEvent(eventClickAddBtn);
-          return;
-        }
-        target = target.parentNode;
-      }
-    }
+    this.elem.addEventListener('click', this.onClick)
 
   }
+
+  onClick = (event) => {
+    let target = event.target;
+    let eventClickAddBtn = new CustomEvent("product-add", {detail: this.id, bubbles: true});
+
+    let btnAdd = target.closest('.card__button');
+
+    if (btnAdd !== null) {
+      btnAdd.dispatchEvent(eventClickAddBtn);      
+    }
+  } 
 }
