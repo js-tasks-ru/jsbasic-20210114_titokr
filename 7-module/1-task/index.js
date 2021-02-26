@@ -54,9 +54,14 @@ export default class RibbonMenu {
     if (this.inner.scrollLeft === 0) {
       this.btnLeft.classList.remove('ribbon__arrow_visible');
     }
-    if (this.inner.scrollWidth - this.inner.scrollLeft - this.inner.clientWidth <= 0) {
+
+    let isRightBtnHidden = this.inner.scrollWidth - this.inner.scrollLeft - this.inner.clientWidth <= 0;
+
+    if (isRightBtnHidden) {
+
       this.btnRight.classList.remove('ribbon__arrow_visible');
-    }
+
+    }    
   }
 
   menuClick = (event) => {

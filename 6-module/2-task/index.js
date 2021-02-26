@@ -7,7 +7,6 @@ export default class ProductCard {
     this.elem.className = 'card';
     this.id = product.id;
     let template = `
-        <div class="card">
             <div class="card__top">
                 <img src="${pathImageProduct+product.image}" class="card__image" alt="product">
                 <span class="card__price">€${product.price.toFixed(2)}</span>
@@ -17,8 +16,7 @@ export default class ProductCard {
                 <button type="button" class="card__button">
                     <img src="/assets/images/icons/plus-icon.svg" alt="icon">
                 </button>
-            </div>
-        </div>`;
+            </div>`;
         
     this.elem.insertAdjacentHTML('afterbegin', template);
 

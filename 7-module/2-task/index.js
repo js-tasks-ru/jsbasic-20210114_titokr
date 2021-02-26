@@ -23,40 +23,36 @@ export default class Modal {
         </div>
 
       </div>`;
+    this.elem.insertAdjacentHTML('afterbegin', this.template);
     this.elem.addEventListener('click', this.modalClick);
   }
 
   setTitle(title) {
+    //debugger;
     if (this.titleElem) {
-      this.titleElem.remove();
+      this.titleElem.innerHTML = title;
+    } else {
+      this.titleElem = document.createElement('div');
+      this.titleElem.className = 'modal__title';
+      this.titleElem.insertAdjacentHTML('afterbegin', title);
     }
-    this.titleElem = document.createElement('div');
-    this.titleElem.className = 'modal__title';
-    this.titleElem.insertAdjacentHTML('afterbegin', title);
-    if (document.querySelector('.is-modal-open')) {
-      document.querySelector('.modal__header').append(this.titleElem);  
-    }
+    this.elem.querySelector('.modal__header').append(this.titleElem);
   }
 
   setBody(body) {
     if (this.bodyElem) {
-      this.bodyElem.remove();
+      this.bodyElem.innerHTML = '';
+    } else {
+      this.bodyElem = document.createElement('div');
+      this.bodyElem.className = 'modal__body';
     }
-
-    this.bodyElem = document.createElement('div');
-    this.bodyElem.className = 'modal__body';
     this.bodyElem.append(body);
-    if (document.querySelector('.is-modal-open')) {
-      document.querySelector('.modal__inner').append(this.bodyElem);  
-    }
+    this.elem.querySelector('.modal__inner').append(this.bodyElem);
   }
 
   open() {
     let body = document.querySelector('body');
     body.classList.add('is-modal-open');
-    this.elem.insertAdjacentHTML('afterbegin', this.template);
-    this.elem.querySelector('.modal__header').append(this.titleElem);
-    this.elem.querySelector('.modal__inner').append(this.bodyElem);
     body.append(this.elem);
     document.addEventListener('keydown', this.keyDown);
   }
