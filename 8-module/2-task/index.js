@@ -14,7 +14,6 @@ export default class ProductGrid {
     this.filteringProducts = products.slice();
     this.createGridItems(this.filteringProducts);
     //debugger;
-//    this.updateFilter({maxSpiciness: 1});
   }
   createGridItems = (products) => {
     for (let item of products) {
@@ -26,9 +25,11 @@ export default class ProductGrid {
   }
   updateFilter(filters) {
     let filteringProducts = this.filteringProducts.slice();
+    //if (productsList !== undefined) {filteringProducts = productsList.slice()}
+    //let filteringProducts = this.products;
     let tempArr;
 
-    if (filters.category !== undefined) {
+    if (filters.category !== undefined && filters.category !== '') {
       tempArr = filteringProducts.filter(item => item.category === filters.category);
       filteringProducts.length = 0;
       filteringProducts = tempArr.slice();

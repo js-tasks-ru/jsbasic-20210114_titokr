@@ -25,7 +25,8 @@ export default class RibbonMenu {
     this.elem = document.createElement('div');
     this.elem.className = 'ribbon';
     this.elem.insertAdjacentHTML('afterbegin', template);
-    this.elem.querySelector('.ribbon__item').classList.add('active');
+    this.elem.querySelector('.ribbon__item').classList.add('ribbon__item_active');
+    //this.value = this.elem.querySelector('.ribbon__item_active').getAttribute('data-id');
 
     this.inner = this.elem.querySelector('.ribbon__inner');
     this.btnRight = this.elem.querySelector('.ribbon__arrow_right');
