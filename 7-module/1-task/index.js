@@ -25,7 +25,8 @@ export default class RibbonMenu {
     this.elem = document.createElement('div');
     this.elem.className = 'ribbon';
     this.elem.insertAdjacentHTML('afterbegin', template);
-    this.elem.querySelector('.ribbon__item').classList.add('active');
+    this.elem.querySelector('.ribbon__item').classList.add('ribbon__item_active');
+    //this.value = this.elem.querySelector('.ribbon__item_active').getAttribute('data-id');
 
     this.inner = this.elem.querySelector('.ribbon__inner');
     this.btnRight = this.elem.querySelector('.ribbon__arrow_right');
@@ -54,9 +55,14 @@ export default class RibbonMenu {
     if (this.inner.scrollLeft === 0) {
       this.btnLeft.classList.remove('ribbon__arrow_visible');
     }
-    if (this.inner.scrollWidth - this.inner.scrollLeft - this.inner.clientWidth <= 0) {
+
+    let isRightBtnHidden = this.inner.scrollWidth - this.inner.scrollLeft - this.inner.clientWidth <= 0;
+
+    if (isRightBtnHidden) {
+
       this.btnRight.classList.remove('ribbon__arrow_visible');
-    }
+
+    }    
   }
 
   menuClick = (event) => {
