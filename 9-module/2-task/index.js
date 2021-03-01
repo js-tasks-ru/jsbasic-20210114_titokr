@@ -25,14 +25,6 @@ export default class Main {
     let ribbonElem = document.querySelector('[data-ribbon-holder]');
     ribbonElem.append(this.ribbonMenu.elem);
 
-    this.stepSlider = new StepSlider({
-      steps: 5,
-      value: 4
-    });
-    //this.stepSlider.setSlider(5);
-    let stepSliderElem = document.querySelector('[data-slider-holder]');
-    stepSliderElem.append(this.stepSlider.elem);
-
     this.cart = new Cart(this.cartIcon);
 
   }
@@ -45,28 +37,34 @@ export default class Main {
       this.products = json;
       this.initialize();
     }).catch((err) => {
-      console.log('Произошла жопа. Fetch problem: ' + err.message);
+      console.log('Fetch problem: ' + err.message);
     });
   }
 
   initialize() {
+    this.addSlider();
     this.productGrid = new ProductGrid(this.products);
     let productsGridElem = document.querySelector('[data-products-grid-holder]');
     productsGridElem.innerHTML = '';
     productsGridElem.append(this.productGrid.elem);
-
     this.productGrid.updateFilter({});    
     let bodyElem = document.querySelector('body');
     bodyElem.addEventListener('product-add', this.eventAdd);
     bodyElem.addEventListener('slider-change', this.eventChangeSlider);
     bodyElem.addEventListener('ribbon-select', this.eventRibbonSelect);
     bodyElem.querySelector('.filters').addEventListener('change', this.eventCheckboxChange);
-    /*
-      let slider = document.querySelector('.slider');
-      slider.dispatchEvent(new CustomEvent('slider-change', { detail: 2, bubbles: true }));
-      let ribbon = document.querySelector('.ribbon');
-      ribbon.dispatchEvent(new CustomEvent('ribbon-select', { detail: 'soups', bubbles: true }));
-    */
+  }
+  addSlider() { // ищем в товарах блюдо с максимальным кол-вом специй и калибруем слайдер
+    let maxSpiciness = 0;
+    this.products.forEach(item => {
+      maxSpiciness = (item.spiciness > maxSpiciness) ? item.spiciness : maxSpiciness;
+    });
+    this.stepSlider = new StepSlider({
+      steps: maxSpiciness + 1,
+      value: maxSpiciness
+    });
+    let stepSliderElem = document.querySelector('[data-slider-holder]');
+    stepSliderElem.append(this.stepSlider.elem);
   }
   eventAdd = (event) => {
     let product = this.products.find(item => item.id === event.detail);
@@ -76,21 +74,15 @@ export default class Main {
     let maxSpiciness = event.detail;
     //debugger;
 
-//    this.productGrid = new ProductGrid(this.products);
-    //let productsGridElem = document.querySelector('[data-products-grid-holder]');
-    //this.stepSlider.setSlider(event.detail);
     this.productGrid.updateFilter({
-        maxSpiciness: maxSpiciness
-      });
-//    productsGridElem.innerHTML = '';
-  //  productsGridElem.append(this.productGrid.elem);
+      maxSpiciness: maxSpiciness
+    });
   }
   eventRibbonSelect = (event) => {
     //debugger;
-      this.ribbonMenu.elem.querySelector('.ribbon__item_active').classList.remove('ribbon__item_active');
-      this.ribbonMenu.elem.querySelector(`[data-id="${event.detail}"]`).classList.add('ribbon__item_active');
-      this.ribbonMenu.value = event.detail;
-
+    this.ribbonMenu.elem.querySelector('.ribbon__item_active').classList.remove('ribbon__item_active');
+    this.ribbonMenu.elem.querySelector(`[data-id="${event.detail}"]`).classList.add('ribbon__item_active');
+    this.ribbonMenu.value = event.detail;
     this.productGrid.updateFilter({
       category: event.detail
     }, this.products);
@@ -98,7 +90,6 @@ export default class Main {
   eventCheckboxChange = (event) => {
     let noNutsTarget = event.target.closest('input[type="checkbox"]#nuts-checkbox');
     let vegeterianOnlyTarget = event.target.closest('input[type="checkbox"]#vegeterian-checkbox');
-
     //debugger;
     if (noNutsTarget) {
       this.productGrid.updateFilter({

@@ -29,6 +29,7 @@ export default class StepSlider {
     this.value.ondragstart = () => false;
     // https://prnt.sc/zw3kqz
     this.thumb.addEventListener('pointerdown', this.dragStart);
+    //debugger;
     this.setSlider(value);
   }
   setSlider(value) {
@@ -58,6 +59,11 @@ export default class StepSlider {
     this.elem.classList.add('slider_dragging');
     document.addEventListener('pointermove', this.dragMoving);
     document.addEventListener('pointerup', this.dragEnd);
+    document.addEventListener('selectstart', this.selectStart);
+  }
+  selectStart = (event) => {
+    event.preventDefault();
+    //console.log('select');
   }
   dragMoving = (event) => {
     let left = event.clientX - this.elem.getBoundingClientRect().left;
@@ -90,6 +96,7 @@ export default class StepSlider {
   dragEnd = (event) => {
     document.removeEventListener('pointermove', this.dragMoving);
     document.removeEventListener('pointerup', this.dragEnd);
+    document.removeEventListener('selectstart', this.selectStart);
     this.elem.classList.remove('slider_dragging');
     this.setSlider(+this.value.textContent);
   }

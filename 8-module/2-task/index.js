@@ -20,49 +20,45 @@ export default class ProductGrid {
       let card = new ProductCard(item);
       this.elemInner.append(card.elem);
     }
-    console.log('показано ', this.elemInner.querySelectorAll('.card').length);
+    //console.log('показано ', this.elemInner.querySelectorAll('.card').length);
     
   }
   updateFilter(filters) {
-    let filteringProducts = this.filteringProducts.slice();
-    //if (productsList !== undefined) {filteringProducts = productsList.slice()}
-    //let filteringProducts = this.products;
+    this.filters = Object.assign({}, this.filters, filters);
+    let filteringProducts = this.products.slice();
     let tempArr;
 
-    if (filters.category !== undefined && filters.category !== '') {
-      tempArr = filteringProducts.filter(item => item.category === filters.category);
+    if (this.filters.category !== undefined && this.filters.category !== '') {
+      tempArr = filteringProducts.filter(item => item.category === this.filters.category);
       filteringProducts.length = 0;
       filteringProducts = tempArr.slice();
       tempArr.length = 0;
     }
 
-
-    if (filters.noNuts === true) {
+    if (this.filters.noNuts === true) {
       tempArr = filteringProducts.filter(item => item.nuts == undefined || item.nuts === false);
       filteringProducts.length = 0;
       filteringProducts = tempArr.slice();
       tempArr.length = 0;
     }
 
-
-    if (filters.vegeterianOnly === true) {
+    if (this.filters.vegeterianOnly === true) {
       tempArr = filteringProducts.filter(item => item.vegeterian === true);
       filteringProducts.length = 0;
       filteringProducts = tempArr.slice();
       tempArr.length = 0;
     }
 
-
-    if (filters.maxSpiciness !== undefined) {
-      tempArr = filteringProducts.filter(item => item.spiciness <= filters.maxSpiciness);
+    if (this.filters.maxSpiciness !== undefined) {
+      tempArr = filteringProducts.filter(item => item.spiciness <= this.filters.maxSpiciness);
       filteringProducts.length = 0;
       filteringProducts = tempArr.slice();
     }
-
+    
     this.elemInner.innerHTML = '';
     this.filteringProducts.length = 0;
     this.filteringProducts = filteringProducts.slice();
     this.createGridItems(this.filteringProducts);
     //return filteringProducts;
-  }
+  } 
 }

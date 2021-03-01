@@ -185,7 +185,7 @@ export default class Cart {
         let result = await response.json();
 
         this.cartItems.length = 0;
-        console.log(result, this.getTotalPrice());
+        //console.log(result, this.getTotalPrice());
         this.bodyModalCart = document.createElement('div');
         this.bodyModalCart.className = 'modal__body-inner';
         this.bodyModalCart.innerHTML = `<p>
